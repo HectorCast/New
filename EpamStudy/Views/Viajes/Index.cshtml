@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EpamStudy.Models.Viajes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Camiones.Placa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Conductores.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rutas.Origen)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Camiones.Placa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Conductores.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rutas.Origen)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ViajeID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ViajeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ViajeID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ea4e235dc22e4225be7fc3e65714501a" Name="Diagram1">
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Bases" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Camiones" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Conductores" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Gasolineras" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Gastos_Viaje" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Rutas" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="autotransportesEPAMModel.Viajes" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="autotransportesEPAMModel.Camiones_Viajes" ManuallyRouted="false" />
+        <AssociationConnector Association="autotransportesEPAMModel.Conductores_Viajes" ManuallyRouted="false" />
+        <AssociationConnector Association="autotransportesEPAMModel.Viaje_Gastos" ManuallyRouted="false" />
+        <AssociationConnector Association="autotransportesEPAMModel.Rutas_Viajes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="autotransportesEPAMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bases">
+          <Key>
+            <PropertyRef Name="BaseID" />
+          </Key>
+          <Property Name="BaseID" Type="tinyint" Nullable="false" />
+          <Property Name="Ciudad" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Camiones">
+          <Key>
+            <PropertyRef Name="SerialNumber" />
+          </Key>
+          <Property Name="SerialNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Placa" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Modelo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Year" Type="smallint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Conductores">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BaseID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Gasolineras">
+          <Key>
+            <PropertyRef Name="GasolineraID" />
+          </Key>
+          <Property Name="GasolineraID" Type="tinyint" Nullable="false" />
+          <Property Name="RazonSocial" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ubicacion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Gastos_Viaje">
+          <Key>
+            <PropertyRef Name="ViajeID" />
+            <PropertyRef Name="NumeroFactura" />
+          </Key>
+          <Property Name="ViajeID" Type="tinyint" Nullable="false" />
+          <Property Name="NumeroFactura" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MontoFactura" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Rutas">
+          <Key>
+            <PropertyRef Name="RutaID" />
+          </Key>
+          <Property Name="RutaID" Type="tinyint" Nullable="false" />
+          <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Destino" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Viajes">
+          <Key>
+            <PropertyRef Name="ViajeID" />
+          </Key>
+          <Property Name="ViajeID" Type="tinyint" Nullable="false" />
+          <Property Name="SerialNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmployeeID" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="RutaID" Type="tinyint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <Association Name="Camiones_Viajes">
+          <End Role="Camiones" Type="Self.Camiones" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Camiones">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="SerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Conductores_Viajes">
+          <End Role="Conductores" Type="Self.Conductores" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conductores">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rutas_Viajes">
+          <End Role="Rutas" Type="Self.Rutas" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rutas">
+              <PropertyRef Name="RutaID" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="RutaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Viaje_Gastos">
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="1" />
+          <End Role="Gastos_Viaje" Type="Self.Gastos_Viaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viajes">
+              <PropertyRef Name="ViajeID" />
+            </Principal>
+            <Dependent Role="Gastos_Viaje">
+              <PropertyRef Name="ViajeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="autotransportesEPAMModelStoreContainer">
+          <EntitySet Name="Bases" EntityType="Self.Bases" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Camiones" EntityType="Self.Camiones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Conductores" EntityType="Self.Conductores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gasolineras" EntityType="Self.Gasolineras" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gastos_Viaje" EntityType="Self.Gastos_Viaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rutas" EntityType="Self.Rutas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Viajes" EntityType="Self.Viajes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Camiones_Viajes" Association="Self.Camiones_Viajes">
+            <End Role="Camiones" EntitySet="Camiones" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="Conductores_Viajes" Association="Self.Conductores_Viajes">
+            <End Role="Conductores" EntitySet="Conductores" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="Rutas_Viajes" Association="Self.Rutas_Viajes">
+            <End Role="Rutas" EntitySet="Rutas" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="Viaje_Gastos" Association="Self.Viaje_Gastos">
+            <End Role="Viajes" EntitySet="Viajes" />
+            <End Role="Gastos_Viaje" EntitySet="Gastos_Viaje" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="autotransportesEPAMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bases">
+          <Key>
+            <PropertyRef Name="BaseID" />
+          </Key>
+          <Property Name="BaseID" Type="Byte" Nullable="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Camiones">
+          <Key>
+            <PropertyRef Name="SerialNumber" />
+          </Key>
+          <Property Name="SerialNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Placa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Modelo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Year" Type="Int16" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Viajes" Relationship="Self.Camiones_Viajes" FromRole="Camiones" ToRole="Viajes" />
+        </EntityType>
+        <EntityType Name="Conductores">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BaseID" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Viajes" Relationship="Self.Conductores_Viajes" FromRole="Conductores" ToRole="Viajes" />
+        </EntityType>
+        <EntityType Name="Gasolineras">
+          <Key>
+            <PropertyRef Name="GasolineraID" />
+          </Key>
+          <Property Name="GasolineraID" Type="Byte" Nullable="false" />
+          <Property Name="RazonSocial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ubicacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Gastos_Viaje">
+          <Key>
+            <PropertyRef Name="ViajeID" />
+            <PropertyRef Name="NumeroFactura" />
+          </Key>
+          <Property Name="ViajeID" Type="Byte" Nullable="false" />
+          <Property Name="NumeroFactura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MontoFactura" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Viajes" Relationship="Self.Viaje_Gastos" FromRole="Gastos_Viaje" ToRole="Viajes" />
+        </EntityType>
+        <EntityType Name="Rutas">
+          <Key>
+            <PropertyRef Name="RutaID" />
+          </Key>
+          <Property Name="RutaID" Type="Byte" Nullable="false" />
+          <Property Name="Origen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Destino" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Viajes" Relationship="Self.Rutas_Viajes" FromRole="Rutas" ToRole="Viajes" />
+        </EntityType>
+        <EntityType Name="Viajes">
+          <Key>
+            <PropertyRef Name="ViajeID" />
+          </Key>
+          <Property Name="ViajeID" Type="Byte" Nullable="false" />
+          <Property Name="SerialNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmployeeID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RutaID" Type="Byte" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Camiones" Relationship="Self.Camiones_Viajes" FromRole="Viajes" ToRole="Camiones" />
+          <NavigationProperty Name="Conductores" Relationship="Self.Conductores_Viajes" FromRole="Viajes" ToRole="Conductores" />
+          <NavigationProperty Name="Gastos_Viaje" Relationship="Self.Viaje_Gastos" FromRole="Viajes" ToRole="Gastos_Viaje" />
+          <NavigationProperty Name="Rutas" Relationship="Self.Rutas_Viajes" FromRole="Viajes" ToRole="Rutas" />
+        </EntityType>
+        <Association Name="Camiones_Viajes">
+          <End Role="Camiones" Type="Self.Camiones" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Camiones">
+              <PropertyRef Name="SerialNumber" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="SerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Conductores_Viajes">
+          <End Role="Conductores" Type="Self.Conductores" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conductores">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Viaje_Gastos">
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="1" />
+          <End Role="Gastos_Viaje" Type="Self.Gastos_Viaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Viajes">
+              <PropertyRef Name="ViajeID" />
+            </Principal>
+            <Dependent Role="Gastos_Viaje">
+              <PropertyRef Name="ViajeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Rutas_Viajes">
+          <End Role="Rutas" Type="Self.Rutas" Multiplicity="1" />
+          <End Role="Viajes" Type="Self.Viajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rutas">
+              <PropertyRef Name="RutaID" />
+            </Principal>
+            <Dependent Role="Viajes">
+              <PropertyRef Name="RutaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="autotransportesEPAMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bases" EntityType="Self.Bases" />
+          <EntitySet Name="Camiones" EntityType="Self.Camiones" />
+          <EntitySet Name="Conductores" EntityType="Self.Conductores" />
+          <EntitySet Name="Gasolineras" EntityType="Self.Gasolineras" />
+          <EntitySet Name="Gastos_Viaje" EntityType="Self.Gastos_Viaje" />
+          <EntitySet Name="Rutas" EntityType="Self.Rutas" />
+          <EntitySet Name="Viajes" EntityType="Self.Viajes" />
+          <AssociationSet Name="Camiones_Viajes" Association="Self.Camiones_Viajes">
+            <End Role="Camiones" EntitySet="Camiones" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="Conductores_Viajes" Association="Self.Conductores_Viajes">
+            <End Role="Conductores" EntitySet="Conductores" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+          <AssociationSet Name="Viaje_Gastos" Association="Self.Viaje_Gastos">
+            <End Role="Viajes" EntitySet="Viajes" />
+            <End Role="Gastos_Viaje" EntitySet="Gastos_Viaje" />
+          </AssociationSet>
+          <AssociationSet Name="Rutas_Viajes" Association="Self.Rutas_Viajes">
+            <End Role="Rutas" EntitySet="Rutas" />
+            <End Role="Viajes" EntitySet="Viajes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="autotransportesEPAMModelStoreContainer" CdmEntityContainer="autotransportesEPAMEntities">
+          <EntitySetMapping Name="Bases">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Bases">
+              <MappingFragment StoreEntitySet="Bases">
+                <ScalarProperty Name="BaseID" ColumnName="BaseID" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Camiones">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Camiones">
+              <MappingFragment StoreEntitySet="Camiones">
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Placa" ColumnName="Placa" />
+                <ScalarProperty Name="Modelo" ColumnName="Modelo" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conductores">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Conductores">
+              <MappingFragment StoreEntitySet="Conductores">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="BaseID" ColumnName="BaseID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gasolineras">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Gasolineras">
+              <MappingFragment StoreEntitySet="Gasolineras">
+                <ScalarProperty Name="GasolineraID" ColumnName="GasolineraID" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gastos_Viaje">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Gastos_Viaje">
+              <MappingFragment StoreEntitySet="Gastos_Viaje">
+                <ScalarProperty Name="ViajeID" ColumnName="ViajeID" />
+                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
+                <ScalarProperty Name="MontoFactura" ColumnName="MontoFactura" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rutas">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Rutas">
+              <MappingFragment StoreEntitySet="Rutas">
+                <ScalarProperty Name="RutaID" ColumnName="RutaID" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="Destino" ColumnName="Destino" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Viajes">
+            <EntityTypeMapping TypeName="autotransportesEPAMModel.Viajes">
+              <MappingFragment StoreEntitySet="Viajes">
+                <ScalarProperty Name="ViajeID" ColumnName="ViajeID" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="RutaID" ColumnName="RutaID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
